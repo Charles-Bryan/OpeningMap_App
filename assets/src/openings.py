@@ -1,0 +1,52 @@
+raw_opening_dict = {
+    "Ruy Lopez": "e4 e5 Nf3 Nc6 Bb5",
+    "Sicilian Najdorf": "e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 a6",
+    "Italian Game": "e4 e5 Nf3 Nc6 Bc4",
+    "Giuoco Piano": "e4 e5 Nf3 Nc6 Bc4 Bc5",
+    "Alekhine's Defense": "e4 Nf6",
+    "Benko Gambit": "d4 Nf6 c4 c5 d5 b5",
+    "Benoni Defense": "d4 Nf6 c4 c5",
+    "Bird's Opening": "f4",
+    "Bogo-Indian Defense": "d4 Nf6 c4 e6 Nf3 Bb4+",
+    "Budapest Gambit": "d4 Nf6 c4 e5",
+    "Catalan Opening": "d4 Nf6 c4 e6 g3",
+    "Caro-Kann": "e4 c6",
+    "Colle System": "d4 d5 Nf3 Nf6 e3",
+    "Dutch Defense": "d4 f5",
+    "English Opening": "c4",
+    "Evans Gambit": "e4 e5 Nf3 Nc6 Bc4 Bc5 b4",
+    "Four Knights Game": "e4 e5 Nf3 Nc6 Nc3 Nf6",
+    "French Defense": "e4 e6",
+    "French Defense Winawer": "e4 e6 d4 d5 Nc3 Bb4",
+    "Grünfeld Defense": "d4 Nf6 c4 g6 Nc3 d5",
+    "King’s Gambit": "e4 e5 f4",
+    "King’s Indian Attack": "Nf3 d5 g3",
+    "King’s Indian Defense": "d4 Nf6 c4 g6",
+    "London System": "d4 Nf6 Nf3 d5 Bc4",
+    "Modern Defense": "d4 g6",
+    "Nimzo-Indian Defense": "d4 Nf6 c4 e6 Nc3 Bb4",
+    "Nimzowitsch Defense": "e4 Nc6",
+    "Petrov’s Defense": "e4 e5 Nf3 Nf6",
+    "Philidor’s Defense": "e4 e5 Nf3 d6",
+    "Pirc Defense": "e4 d6 2.d4 Nf6",
+    "Queen’s Gambit": "d4 d5 c4",
+    "Queen’s Gambit Accepted": "d4 d5 c4 dxc4",
+    "Queen’s Gambit Declined": "d4 d5 c4 e6",
+    "Queen’s Indian Defense": "d4 Nf6 c4 e6 Nf3 b6",
+    "Anti-Nimzo-Indian": "d4 Nf6 c4 e6 Nf3",
+    "Réti Opening": "Nf3 d5 c4",
+    "Scandinavian Defense": "e4 d5",
+    "Scotch Game": "e4 e5 Nf3 Nc6 d4",
+    "Sicilian Defense": "e4 c5",
+    "Slav Defense": "d4 d5 c4 c6",
+    "Torre Attack": "d4 e6 Nf3 Nf6 Bg5",
+    "Two Knights Defense": "e4 e5 Nf3 Nc6 Bc4 Nf6",
+    "Vienna Game": "e4 e5 2.Nc3",
+    "Wade Defense": "d4 d6 Nf3 Bg4"
+}
+
+# Sort the openings programmatically rather than me doing it every time I add one.
+# Then put 'All Games' at the front using a magic expression.
+opening_dict = {**{"All Games": ""}, **{key: value for key, value in sorted(raw_opening_dict.items())}}
+
+opening_options = [{"label": opening, "value": opening} for opening in opening_dict]
