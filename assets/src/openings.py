@@ -46,7 +46,7 @@ raw_opening_dict = {
 }
 
 # Sort the openings programmatically rather than me doing it every time I add one.
-# Then put 'All Games' at the front using a magic expression.
+# Then put 'All Games' at the front using a magical expression.
 opening_dict = {**{"All Games": ""}, **{key: value for key, value in sorted(raw_opening_dict.items())}}
 
 opening_options = [{"label": opening, "value": opening} for opening in opening_dict]

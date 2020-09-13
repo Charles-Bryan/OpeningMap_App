@@ -61,14 +61,31 @@ MIDDLE_BOX = {'width': '100%',
            'height': 'auto',
            'margin': "1%",}
 
-MID_BOXES = {'width': '22%',
-             'height': '4rem',
+MID_OUTER_BOXES = {'width': '22%',
+             'height': '6rem',
              'display': 'inline-block',
              'vertical-align': 'top',
              'margin-bottom': "1rem",
              'margin-left': "1%",
-             'margin-right': "1%",
-             "border": "groove",
-             "border-width": "medium",
-             "border-color": "gray",
-             "border-radius": "3px",}
+             'margin-right': "1%",}
+
+MID_INNER_BOXES = {'vertical-align': 'bottom',
+                   'height': '3.75rem',
+                   'margin-top': '0rem',
+                   'margin-bottom': "1rem",
+                   'margin-left': "1%",
+                   'margin-right': "1%",
+                   "border": "groove",
+                   "border-width": "medium",
+                   "border-color": "gray",
+                   "border-radius": "3px",}
+
+BOX1_TEXT = {'text-align': 'left',
+            'font-size': 'medium',
+            'margin-left': '12%',
+            'margin-right': '0rem',
+            'margin-bottom': '0rem',
+            'margin-top': '2%',
+            'width': '36%',
+            'height': '1rem',
+            'display': 'inline-block'}

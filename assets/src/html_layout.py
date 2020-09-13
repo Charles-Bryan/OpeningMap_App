@@ -18,7 +18,7 @@ def setup_layout(app):
                                         'margin': '0',
                                         'margin-bottom': '2rem',
                                         }),
-            html.H2("Search Settings", className="display-4", style={'text-align': 'center', 'font-size': '2em'}),
+            html.H2("Search Settings", className="display-2", style={'text-align': 'center', 'font-size': '2em'}),
             html.Hr(),
 
             html.P("Enter a Lichess username", className="lead"),
@@ -56,7 +56,36 @@ def setup_layout(app):
                          value="All Games",
                          style={'width': "100%"}
                          ),
-            html.Hr()
+            html.Hr(),
+
+            html.H3("Summary Statistics Settings", className="display-3", style={'text-align': 'center', 'font-size': '1.2em'}),
+            html.Hr(),
+
+            html.P("Set the number of ply", className="lead",
+                   style={"width": '78%', 'display': 'inline-block', 'vertical-align': 'center', "margin-bottom": "0px"}),
+            dcc.Input(
+                id="select_ply",
+                type="number",
+                debounce=True,
+                min=1, max=16, step=1,
+                value=6,
+                style={"width": '15%', 'display': 'inline-block', 'vertical-align': 'center'},
+            ),
+            html.P("Ex. 1.e4 e5 would be 2 ply", className="lead",
+                   style={"font-weight": "bolder", "font-size": "small", "margin": "0px"}),
+            html.Hr(),
+
+            html.P("Set the minimum occurrences", className="lead",
+                   style={"width": '78%', 'display': 'inline-block', 'vertical-align': 'center'}),
+            dcc.Input(
+                id="select_min_occur",
+                type="number",
+                debounce=True,
+                min=1, max=100, step=1,
+                value=3,
+                style={"width": '15%', 'display': 'inline-block', 'vertical-align': 'center'},
+            ),
+            html.Hr(),
         ],
         style=cs.SIDEBAR_STYLE,
     )
@@ -87,10 +116,43 @@ def setup_layout(app):
             ], style=cs.TOP_RIGHT_BOX),
         ], style=cs.TOP_BOX),
         html.Div([
-            html.Div([html.P("BOX1", style={'text-align': 'left'})], style=cs.MID_BOXES),
-            html.Div([html.P("BOX2", style={'text-align': 'left'})], style=cs.MID_BOXES),
-            html.Div([html.P("BOX3", style={'text-align': 'left'})], style=cs.MID_BOXES),
-            html.Div([html.P("BOX4", style={'text-align': 'left'})], style=cs.MID_BOXES),
+            html.Div([
+                html.P("OVERALL STATS", id="BOX1_HEADER", style={'text-align': 'center', 'margin': '0px', 'font-weight': 'bolder'}),
+                html.Div([html.P(id="BOX1_GAMES", children=[],
+                                 style=cs.BOX1_TEXT
+                                 ),
+                          html.P(id="BOX1_WINS", children=[],
+                                 style=cs.BOX1_TEXT
+                                 ),
+                          html.P(id="BOX1_LOSSES", children=[],
+                                 style=cs.BOX1_TEXT
+                                 ),
+                          html.P(id="BOX1_DRAWS", children=[],
+                                 style=cs.BOX1_TEXT
+                                 ),
+                          ], style=cs.MID_INNER_BOXES)
+                     ], style=cs.MID_OUTER_BOXES),
+            html.Div([
+                html.P("MOST FREQUENT OPENING", id="BOX2_HEADER", style={'text-align': 'center', 'margin': '0px', 'font-weight': 'bolder'}),
+                html.Div([
+                    html.P(id="BOX2_STMT", children=[], style={'text-align': 'left', 'margin': '0px', 'font-family': 'monospace'}),
+                    html.P(id="BOX2", children=[], style={'text-align': 'left', 'margin': '0px', 'font-family': 'monospace'})
+                ], style=cs.MID_INNER_BOXES)
+                     ], style=cs.MID_OUTER_BOXES),
+            html.Div([
+                html.P("BEST OPENING", id="BOX3_HEADER", style={'text-align': 'center', 'margin': '0px', 'font-weight': 'bolder'}),
+                html.Div([
+                    html.P(id="BOX3_STMT", children=[], style={'text-align': 'left', 'margin': '0px', 'font-family': 'monospace'}),
+                    html.P(id="BOX3", children=[],
+                             style={'text-align': 'left', 'margin': '0px', 'font-family': 'monospace'})], style=cs.MID_INNER_BOXES)
+                     ], style=cs.MID_OUTER_BOXES),
+            html.Div([
+                html.P("WORST OPENING", id="BOX4_HEADER", style={'text-align': 'center', 'margin': '0px', 'font-weight': 'bolder'}),
+                html.Div([
+                    html.P(id="BOX4_STMT", children=[], style={'text-align': 'left', 'margin': '0px', 'font-family': 'monospace'}),
+                    html.P(id="BOX4", children=[],
+                             style={'text-align': 'left', 'margin': '0px', 'font-family': 'monospace'})], style=cs.MID_INNER_BOXES)
+                     ], style=cs.MID_OUTER_BOXES),
         ], style=cs.MIDDLE_BOX),
         html.Div([
             html.Div(id='my_text', children=[]),  # Display Text
