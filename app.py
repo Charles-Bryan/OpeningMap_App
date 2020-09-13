@@ -74,21 +74,25 @@ def update_my_graph(_, Color, GameTypes, Opening, Name):
         parameters["Classical_Games"] = True
     # GameType related actions--------------------------------------------------------
     parameters["Opening"] = Opening
-    # ------------------------------------------------------------------------------------------------------------------
-    # Get data section
+
+    # --------------------------------------------------------------------------------------
+    # Data Retrieval and modifications
+
+    # Get all player's games for the appropriate color
     data = retrieve_player_db(parameters, db_config)
 
-    # Column names. Can be retrieved from the database.table but can hardcode
+    # Column names. Can be retrieved from the database.table but can hardcode since it will be consistent
     col_names = ['WhiteName', 'BlackName', 'Result', 'Half_Move_1', 'Half_Move_2', 'Half_Move_3', 'Half_Move_4',
                  'Half_Move_5', 'Half_Move_6', 'Half_Move_7', 'Half_Move_8', 'Half_Move_9', 'Half_Move_10',
                  'Half_Move_11', 'Half_Move_12', 'Half_Move_13', 'Half_Move_14', 'Half_Move_15', 'Half_Move_16',
                  'Half_Move_17', 'Half_Move_18', 'Half_Move_19', 'Half_Move_20']
+    # Convert data to a df
     df = pd.DataFrame(data, columns=col_names)
     # Filter games on the opening (if one is selected)
     df = da.filter_on_opening(df, parameters)
     # IF PlayerColor IS BLACK, remap the results using a dict. 1->0, 0->1 .5 -> 0.5
     df = da.correct_results(df, parameters)
-    # add Occurrences column
+    # add Occurrences column for grouping operations
     df["Occurrences"] = 1
     # add columns for # of wins, # of losses, # of draws.
     # Couldn't get the hover data to work, but leaving this optimistically
@@ -98,6 +102,7 @@ def update_my_graph(_, Color, GameTypes, Opening, Name):
     df.loc[df["Result"] == 0.0, 'Losses'] = 1
     df["Draws"] = 0
     df.loc[df["Result"] == 0.5, 'Draws'] = 1
+
     # If someone, somehow, has over 3000(?) games, then plotly gets slow. Function to reduce that.
     # A placeholder for now.
     df = da.reduce_games(df)
@@ -133,7 +138,7 @@ def update_my_graph(_, Color, GameTypes, Opening, Name):
                       # 'Draws:   %{customdata[2]:.2f}'
                       '<extra></extra>'))
     fig.update_layout(
-        margin=dict(l=0, r=0, t=0, b=0),
+        margin=dict(l=0, r=0, t=20, b=0),
         paper_bgcolor="white",
     )
 
