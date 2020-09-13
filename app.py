@@ -7,9 +7,8 @@ import dash
 from dash.dependencies import Input, Output, State
 
 from assets.src.AWS_connection import retrieve_player_db
-from assets.src.dataframe_adjustments import correct_results, reduce_games, determine_path, correct_dtypes, filter_on_opening
+import assets.src.dataframe_adjustments as da
 from assets.src.secure import *
-
 from assets.src.html_layout import setup_layout
 
 
@@ -18,7 +17,7 @@ app = dash.Dash(__name__)
 # ------------------------------------------------------------------------------
 # Set up One time data events
 
-# use sys arg's to populate the db credentials
+# populate db credentials. Credentials masked by gitignore
 db_config = {
     'user': user,
     'password': pwd,
@@ -86,9 +85,9 @@ def update_my_graph(_, Color, GameTypes, Opening, Name):
                  'Half_Move_17', 'Half_Move_18', 'Half_Move_19', 'Half_Move_20']
     df = pd.DataFrame(data, columns=col_names)
     # Filter games on the opening (if one is selected)
-    df = filter_on_opening(df, parameters)
+    df = da.filter_on_opening(df, parameters)
     # IF PlayerColor IS BLACK, remap the results using a dict. 1->0, 0->1 .5 -> 0.5
-    df = correct_results(df, parameters)
+    df = da.correct_results(df, parameters)
     # add Occurrences column
     df["Occurrences"] = 1
     # add columns for # of wins, # of losses, # of draws.
@@ -100,15 +99,16 @@ def update_my_graph(_, Color, GameTypes, Opening, Name):
     df["Draws"] = 0
     df.loc[df["Result"] == 0.5, 'Draws'] = 1
     # If someone, somehow, has over 3000(?) games, then plotly gets slow. Function to reduce that.
-    df = reduce_games(df)
+    # A placeholder for now.
+    df = da.reduce_games(df)
 
     # path steps -----------------
     df["Title"] = f"{parameters['Opening']}"
-    plot_path = determine_path(df, parameters)
+    plot_path = da.determine_path(df, parameters)
     # ----------------------------
 
     # Correct the datatypes for aggregation and plotting
-    df = correct_dtypes(df)
+    df = da.correct_dtypes(df)
     df_agg = df.groupby(plot_path).agg(Avg_Result=('Result', 'mean'),
                                        Occurrences=('Occurrences', 'sum'),
                                        Wins=('Wins', 'sum'),
