@@ -11,6 +11,7 @@ from assets.src.html_layout import setup_layout
 import assets.src.dataframe_adjustments as da
 import assets.src.calculate_df_stats as cds
 
+import chess
 
 app = dash.Dash(__name__)
 

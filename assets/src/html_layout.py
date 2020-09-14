@@ -4,11 +4,18 @@ import dash_html_components as html
 from assets.src import css_styles as cs
 from assets.src.openings import opening_options
 
+import chess
+import chess.svg
+
+board = chess.Board("8/8/8/8/4N3/8/8/8 w - - 0 1")
+squares = board.attacks(chess.E4)
+image = chess.svg.board(board=board, squares=squares)
 
 def setup_layout(app, default_parameters):
     # App layout
 
-    # SideBar
+    # ------------------------------------------------------------------------------------------------------------------
+    # Left SideBar
     sidebar = html.Div(
         [
             html.P("OpeningMap", style=cs.LOGO),
@@ -92,10 +99,9 @@ def setup_layout(app, default_parameters):
         style=cs.SIDEBAR_STYLE,
     )
 
-    # Main Body
-    main = html.Div([
-        # Top Row
-        html.Div([
+    # ------------------------------------------------------------------------------------------------------------------
+    # Main Body Sections
+    Top_Row = html.Div([
             html.Div([
                 html.Img(
                     src=app.get_asset_url("/images/E4_is_Best_image.png"),
@@ -118,9 +124,9 @@ def setup_layout(app, default_parameters):
                     style=cs.TOP_RIGHT_IMAGE,
                 ),
             ], style=cs.TOP_RIGHT_BOX),
-        ], style=cs.TOP_BOX),
-        # 4 Mid Boxes
-        html.Div([
+        ], style=cs.TOP_BOX)
+
+    Stat_Box_Row = html.Div([
             html.Div([
                 html.P("OVERALL STATS", id="BOX1_HEADER", style=cs.BOX_HEADER),
                 html.Div([html.P(id="BOX1_GAMES", children=[],
@@ -158,18 +164,25 @@ def setup_layout(app, default_parameters):
                     html.P(id="BOX4", children=[], style=cs.BOX_STMT)],
                     style=cs.MID_INNER_BOXES)
                      ], style=cs.MID_OUTER_BOXES),
-        ], style=cs.MIDDLE_BOX),
+        ], style=cs.MIDDLE_BOX)
 
-        # Opening Plot Area
-        html.Div([
+    Main_Plot_Section = html.Div([
             html.Div(id='player_name_txt', children=[],
                      style={'font-size': 'xx-large',
                             'margin-top': '1rem',
                             'margin-bottom': '0.25rem'}),
             dcc.Graph(id='Opening_Map', figure={},
-                      # style={'border': 'solid'}
-            )
+                      )
+        ])
+
+    Chess_Board_Row = html.Div([
+            html.Div([
+                html.P("OVERALL STATS", id="CHESS_SVG"),
+                html.Div([])
             ])
-        ], style=cs.CONTENT_STYLE)
+        ])
+
+    # Vertically Stack the sections
+    main = html.Div([Top_Row, Stat_Box_Row, Main_Plot_Section, Chess_Board_Row], style=cs.CONTENT_STYLE)
 
     return html.Div([sidebar, main])
