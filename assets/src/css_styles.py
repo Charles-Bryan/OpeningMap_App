@@ -1,5 +1,34 @@
 # CSS STYLES
-# the style arguments for the sidebar. We use position:fixed and a fixed width
+
+# --------------------------------------------------SIDEBAR STYLES------------------------------------------------------
+LOGO = {'text-align': 'left',
+        'font-size': '1.7em',
+        'font-family': 'Acumin, "Helvetica Neue", sans-serif',
+        'color': '#0000ff',
+        'font-weight': '300',
+        'vertical-align': 'top',
+        'margin': '0',
+        'margin-bottom': '2rem',
+        }
+
+# SIDEBAR STYLES
+HEADING_1 = {'text-align': 'center',
+             'font-size': 'xxx-large',
+             'margin-top': '0px',
+             'margin-bottom': '0px'
+             }
+HEADING_2 = {'text-align': 'center',
+             'font-size': '2em'}
+HEADING_3 = {'text-align': 'center',
+             'font-size': '1.2em',
+             'margin-top': '10px',
+             'margin-bottom': '10px'}
+
+SIDEBAR_TEXT = {
+
+}
+
+# Overall sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
@@ -89,3 +118,12 @@ BOX1_TEXT = {'text-align': 'left',
             'width': '36%',
             'height': '1rem',
             'display': 'inline-block'}
+
+BOX_HEADER = {'text-align': 'center',
+              'margin': '0px',
+              'font-weight': 'bolder'}
+
+# Used within Mid Boxes 2-4
+BOX_STMT = {'text-align': 'left',
+            'margin': '0px',
+            'font-family': 'monospace'}

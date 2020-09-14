@@ -1,6 +1,3 @@
-import sys
-import math
-
 import pandas as pd
 import plotly.express as px
 
@@ -28,21 +25,22 @@ db_config = {
     'raise_on_warnings': True
 }
 
+# Set default parameters
 default_parameters = {
     "PlayerName": 'E4_is_Better',
-    "PlayerColor": 'White',
+    "PlayerColor": 'Black',
     "Rapid_Games": True,
     "Classical_Games": True,
     "Opening": 'All Games',
     "Ply": 6,
-    "Min_Occur": 3,
+    "Min_Occur": 2,
     # "Start_Date": pass
     # "End_Date": pass
 }
 parameters = default_parameters
 # ------------------------------------------------------------------------------
 # app layout (separated into html_layout.py & css_layout.py)
-app.layout = setup_layout(app)
+app.layout = setup_layout(app, default_parameters)
 # ------------------------------------------------------------------------------
 # Connect the Plotly graphs with Dash Components
 @app.callback(
@@ -57,6 +55,7 @@ app.layout = setup_layout(app)
      Output(component_id='BOX3', component_property='children'),
      Output(component_id='BOX4_STMT', component_property='children'),
      Output(component_id='BOX4', component_property='children'),
+     Output(component_id='player_name_txt', component_property='children'),
      ],
     [Input(component_id='submit-val', component_property='n_clicks'),
      Input(component_id='select_PlayerColor', component_property='value'),
@@ -78,7 +77,7 @@ def update_my_graph(_, Color, GameTypes, Opening, Ply, Min_Occur, Name):
     # Name Related actions------------------------------------------------------------
     # output_text = f"The name chosen by user was: {Name}"
     parameters["PlayerName"] = Name
-
+    player_name_txt = f"Player Selected: {Name}"
     # Color related actions-----------------------------------------------------------
     parameters["PlayerColor"] = Color
     # GameType related actions--------------------------------------------------------
@@ -94,6 +93,8 @@ def update_my_graph(_, Color, GameTypes, Opening, Ply, Min_Occur, Name):
         parameters["Rapid_Games"] = True
         parameters["Classical_Games"] = True
     # GameType related actions--------------------------------------------------------
+    if Opening == None:  # Happens if user removes selection with little x thing
+        Opening = "All Games"
     parameters["Opening"] = Opening
     # Ply related actions--------------------------------------------------------
     parameters["Ply"] = Ply
@@ -182,7 +183,7 @@ def update_my_graph(_, Color, GameTypes, Opening, Ply, Min_Occur, Name):
         paper_bgcolor="white",
     )
 
-    return fig, G_stmt, W_stmt, L_stmt, D_stmt, most_played_stmt, most_played, best_result_stmt, best_opening, worst_result_stmt, worst_opening
+    return fig, G_stmt, W_stmt, L_stmt, D_stmt, most_played_stmt, most_played, best_result_stmt, best_opening, worst_result_stmt, worst_opening, player_name_txt
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
