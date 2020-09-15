@@ -197,7 +197,6 @@ def update_my_graph(_, Color, GameTypes, Opening, Ply, Min_Occur, Name):
 
 def board_update_from_user(fig, clickData):
     # Does not use the clickData, but gets updated when it updates.
-    print(fig)
 
     # default starting board every time
     board = chess.Board()
