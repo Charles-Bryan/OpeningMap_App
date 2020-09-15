@@ -7,9 +7,6 @@ from assets.src.openings import opening_options
 import chess
 import chess.svg
 
-board = chess.Board("8/8/8/8/4N3/8/8/8 w - - 0 1")
-squares = board.attacks(chess.E4)
-image = chess.svg.board(board=board, squares=squares)
 
 def setup_layout(app, default_parameters):
     # App layout
@@ -69,22 +66,25 @@ def setup_layout(app, default_parameters):
             html.H3("Summary Statistics Settings", style=cs.HEADING_3),
             html.Hr(),
             # ----------------------------------------------------------------------------
-            html.P("Set the number of ply",
-                   style={"width": '78%', 'display': 'inline-block', 'vertical-align': 'center', "margin-bottom": "0px"}),
+            html.Div([
+                html.P("Set the number of ply",
+                   style={'display': 'inline-block', 'margin-top': '0px', "margin-bottom": "0px"}),
+                html.P("Ex. 1.e4 e5 would be 2 ply",
+                       style={"font-weight": "bolder", "font-size": "small", "margin": "0px"}),
+                ], style={"width": '78%', 'display': 'inline-block',}),
             dcc.Input(
                 id="select_ply",
                 type="number",
                 debounce=True,
                 min=1, max=16, step=1,
                 value=default_parameters["Ply"],
-                style={"width": '15%', 'display': 'inline-block', 'vertical-align': 'center'},
+                style={"width": '15%', 'display': 'inline-block', 'margin-top': '0.45rem', 'vertical-align': 'top'},
             ),
-            html.P("Ex. 1.e4 e5 would be 2 ply",
-                   style={"font-weight": "bolder", "font-size": "small", "margin": "0px"}),
             html.Hr(),
             # ----------------------------------------------------------------------------
             html.P("Set the minimum occurrences",
-                   style={"width": '78%', 'display': 'inline-block', 'vertical-align': 'center'}),
+                   style={"width": '78%', 'display': 'inline-block', 'vertical-align': 'center',
+                          'margin-top': '0rem', 'margin-bottom': '0rem'}),
             dcc.Input(
                 id="select_min_occur",
                 type="number",
@@ -95,6 +95,10 @@ def setup_layout(app, default_parameters):
             ),
             html.Hr(),
             # ----------------------------------------------------------------------------
+            html.H3("Contact Info", style=cs.HEADING_3),
+            html.Hr(),
+            # ----------------------------------------------------------------------------
+            html.P("Email:       OpeningMap@gmail.com"),
         ],
         style=cs.SIDEBAR_STYLE,
     )
@@ -130,16 +134,16 @@ def setup_layout(app, default_parameters):
             html.Div([
                 html.P("OVERALL STATS", id="BOX1_HEADER", style=cs.BOX_HEADER),
                 html.Div([html.P(id="BOX1_GAMES", children=[],
-                                 style=cs.BOX1_TEXT
+                                 style=cs.BOX1_TEXT_LEFT
                                  ),
                           html.P(id="BOX1_WINS", children=[],
-                                 style=cs.BOX1_TEXT
+                                 style=cs.BOX1_TEXT_RIGHT
                                  ),
                           html.P(id="BOX1_LOSSES", children=[],
-                                 style=cs.BOX1_TEXT
+                                 style=cs.BOX1_TEXT_LEFT
                                  ),
                           html.P(id="BOX1_DRAWS", children=[],
-                                 style=cs.BOX1_TEXT
+                                 style=cs.BOX1_TEXT_RIGHT
                                  ),
                           ], style=cs.MID_INNER_BOXES)
                      ], style=cs.MID_OUTER_BOXES),
@@ -172,14 +176,19 @@ def setup_layout(app, default_parameters):
                             'margin-top': '1rem',
                             'margin-bottom': '0.25rem'}),
             dcc.Graph(id='Opening_Map', figure={},
-                      )
+                      ),
+            html.P("Data Last Updated on 8/31/2020", id="Last_Update", style=cs.LAST_UPDATE),
         ])
 
     Chess_Board_Row = html.Div([
             html.Div([
-                html.P("OVERALL STATS", id="CHESS_SVG"),
-                html.Div([])
-            ])
+                html.Div([
+                    html.Div(id='Chess_SVG', children=[], style={'width': '18rem', 'margin-top': '1rem'}),
+                    html.A(
+                        html.Button('Open in Lichess Analysis', style={'margin-left': '4rem', 'background-color': 'darkgray'}),
+                        id='Lichess_Link', href='https://lichess.org/analysis')
+                ], style=cs.CHESS_SVG),
+            ], style=cs.BOARD_ROW)
         ])
 
     # Vertically Stack the sections

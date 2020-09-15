@@ -3,10 +3,12 @@ import plotly.express as px
 
 import dash
 from dash.dependencies import Input, Output, State
+import dash_dangerously_set_inner_html
 
 from assets.src.AWS_connection import retrieve_player_db
 from assets.src.secure import *
 from assets.src.html_layout import setup_layout
+from assets.src.openings import opening_dict
 
 import assets.src.dataframe_adjustments as da
 import assets.src.calculate_df_stats as cds
@@ -148,23 +150,23 @@ def update_my_graph(_, Color, GameTypes, Opening, Ply, Min_Occur, Name):
 
     # # If someone, somehow, has over 3000(?) games, then plotly gets slow. Function to reduce that.
     # # A placeholder for now.
-    # df = da.reduce_games(df)
+    df = da.reduce_and_agg(df)
 
     # path steps --------------------------------------------
     # Add a title column and set the path for the plotly treemap
     df["Title"] = f"{parameters['Opening']}"
     plot_path = da.determine_path(df, parameters)
     # -------------------------------------------------------
-    # aggregation steps
-    df_agg = df.groupby(plot_path).agg(Avg_Result=('Result', 'mean'),
-                                       Occurrences=('Occurrences', 'sum'),
-                                       Wins=('Wins', 'sum'),
-                                       Losses=('Losses', 'sum'),
-                                       Draws=('Draws', 'sum')).reset_index()
+    # # aggregation steps
+    # df_agg = df.groupby(plot_path).agg(Avg_Result=('Result', 'mean'),
+    #                                    Occurrences=('Occurrences', 'sum'),
+    #                                    Wins=('Wins', 'sum'),
+    #                                    Losses=('Losses', 'sum'),
+    #                                    Draws=('Draws', 'sum')).reset_index()
     # ------------------------------------------------------------------------------------------------------------------
 
     # Plotly Express
-    fig = px.treemap(df_agg, path=plot_path, values='Occurrences',
+    fig = px.treemap(df, path=plot_path, values='Occurrences',
                      color='Avg_Result',
                      # hover_data=['iso_alpha'],
                      color_continuous_scale=["black", "white", "blue"],
@@ -185,6 +187,46 @@ def update_my_graph(_, Color, GameTypes, Opening, Ply, Min_Occur, Name):
     )
 
     return fig, G_stmt, W_stmt, L_stmt, D_stmt, most_played_stmt, most_played, best_result_stmt, best_opening, worst_result_stmt, worst_opening, player_name_txt
+
+
+@app.callback(
+    [Output(component_id='Chess_SVG', component_property='children'),
+     Output(component_id='Lichess_Link', component_property='href')],
+    [Input(component_id='Opening_Map', component_property='figure'),
+     Input('Opening_Map', 'clickData')])
+
+def board_update_from_user(fig, clickData):
+    # Does not use the clickData, but gets updated when it updates.
+    print(fig)
+
+    # default starting board every time
+    board = chess.Board()
+
+    fig_data = fig['data'][0]
+    if 'level' in fig_data:
+        # opening first
+        chosen_opening = fig_data['level'].split('/')[0]
+        end_seq = fig_data['level'].split('/')[1:]
+        if chosen_opening == "All Games":
+            move_seq = end_seq
+        else:
+            move_seq = opening_dict[chosen_opening].split(' ') + end_seq
+        for move in move_seq:
+            board.push_san(move)
+
+    else:
+        chosen_opening = fig['data'][0]['ids'][0].split('/')[0]
+        if chosen_opening != "All Games":
+            opening_seq = opening_dict[chosen_opening].split(' ')
+            for move in opening_seq:
+                board.push_san(move)
+
+    chess_board = chess.svg.board(board=board)
+    svg_output = dash_dangerously_set_inner_html.DangerouslySetInnerHTML(chess_board)
+
+    lichess_url = f"https://lichess.org/analysis/{board.fen().replace(' ', '_')}"
+
+    return svg_output, lichess_url
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':

@@ -18,7 +18,9 @@ HEADING_1 = {'text-align': 'center',
              'margin-bottom': '0px'
              }
 HEADING_2 = {'text-align': 'center',
-             'font-size': '2em'}
+             'font-size': '2em',
+             'margin-top': '0rem',
+             'margin-bottom': '0rem'}
 HEADING_3 = {'text-align': 'center',
              'font-size': '1.2em',
              'margin-top': '10px',
@@ -109,9 +111,19 @@ MID_INNER_BOXES = {'vertical-align': 'bottom',
                    "border-color": "gray",
                    "border-radius": "3px",}
 
-BOX1_TEXT = {'text-align': 'left',
+BOX1_TEXT_LEFT = {'text-align': 'left',
             'font-size': 'medium',
             'margin-left': '12%',
+            'margin-right': '0rem',
+            'margin-bottom': '0rem',
+            'margin-top': '2%',
+            'width': '42%',
+            'height': '1rem',
+            'display': 'inline-block'}
+
+BOX1_TEXT_RIGHT = {'text-align': 'left',
+            'font-size': 'medium',
+            'margin-left': '6%',
             'margin-right': '0rem',
             'margin-bottom': '0rem',
             'margin-top': '2%',
@@ -127,3 +139,20 @@ BOX_HEADER = {'text-align': 'center',
 BOX_STMT = {'text-align': 'left',
             'margin': '0px',
             'font-family': 'monospace'}
+
+BOARD_ROW = {
+    'width': '100%',
+}
+
+CHESS_SVG = {
+    'margin-left': '33%',
+    'width': '66%',
+}
+
+LAST_UPDATE = {
+    "margin-top": "0px",
+    "margin-right": "6.8rem",
+    "font-size": "smaller",
+    "float": "right",
+
+}
