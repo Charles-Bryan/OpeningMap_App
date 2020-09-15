@@ -40,7 +40,7 @@ def get_grouped_games(df, parameters):
                               Occurrences=('Occurrences', 'sum')).reset_index()
 
     if grouped_games.shape[0] == 0:
-        print("Error Code 1")
+        print("Error Code 1: No Games Matching this Opening")
         return "No Games Matching this Opening"
 
     grouped_games = grouped_games[grouped_games['Occurrences']>=parameters["Min_Occur"]]

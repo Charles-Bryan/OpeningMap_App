@@ -70,13 +70,14 @@ app.layout = setup_layout(app, default_parameters)
      ]
 )
 def update_my_graph(_, Color, GameTypes, Opening, Ply, Min_Occur, Name):
+    print(" Main Plot Updating... Given Parameters Below:")
     print(f"Name: {Name}")
     print(f"Color: {Color}")
     print(f"GameTypes: {GameTypes}")
     print(f"Opening: {Opening}")
     print(f"Ply: {Ply}")
     print(f"Min_Occur: {Min_Occur}")
-
+    print("--------------------------------------------------------------------------")
     # Name Related actions------------------------------------------------------------
     # output_text = f"The name chosen by user was: {Name}"
     parameters["PlayerName"] = Name

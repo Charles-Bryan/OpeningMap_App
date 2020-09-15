@@ -22,7 +22,7 @@ def retrieve_player_db(parameters, db_config):
     elif parameters["Rapid_Games"] == False and parameters["Classical_Games"] == True:
         sql_query = classical_statement
     elif parameters["Rapid_Games"] == False and parameters["Classical_Games"] == False:
-        print("No GameType Selected")
+        print("Error Code 2: No GameType Selected")
         return []
 
     db_cursor.execute(sql_query)
