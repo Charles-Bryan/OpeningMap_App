@@ -203,6 +203,8 @@ def board_update_from_user(fig, clickData):
     board = chess.Board()
 
     fig_data = fig['data'][0]
+    move_seq=[]
+    last_move=None
     if 'level' in fig_data:
         # opening first
         chosen_opening = fig_data['level'].split('/')[0]
@@ -211,17 +213,14 @@ def board_update_from_user(fig, clickData):
             move_seq = end_seq
         else:
             move_seq = opening_dict[chosen_opening].split(' ') + end_seq
-        for move in move_seq:
-            board.push_san(move)
-
     else:
         chosen_opening = fig['data'][0]['ids'][0].split('/')[0]
         if chosen_opening != "All Games":
-            opening_seq = opening_dict[chosen_opening].split(' ')
-            for move in opening_seq:
-                board.push_san(move)
+            move_seq = opening_dict[chosen_opening].split(' ')
 
-    chess_board = chess.svg.board(board=board)
+    for move in move_seq:
+        last_move=board.push_san(move)
+    chess_board = chess.svg.board(board=board, lastmove=last_move)
     svg_output = dash_dangerously_set_inner_html.DangerouslySetInnerHTML(chess_board)
 
     lichess_url = f"https://lichess.org/analysis/{board.fen().replace(' ', '_')}"
